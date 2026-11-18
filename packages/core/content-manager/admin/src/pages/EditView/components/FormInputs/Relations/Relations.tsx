@@ -750,7 +750,12 @@ const RelationModalWithContext = ({
 
   const options = data?.results ?? [];
 
-  React.useLayoutEffect(() => {
+  /**
+   * This must be a passive effect (not a layout effect): the Combobox syncs its text
+   * to the selected option's label in its own effect after a selection, and since child
+   * effects run before parent effects, clearing here ensures our reset wins.
+   */
+  React.useEffect(() => {
     setTextValue('');
   }, [fieldValue]);
 
